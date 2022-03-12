@@ -48,29 +48,46 @@ input;
   }
 
   function handleClickOperation() {
-    removeLastItemIfItIsAnOperator();
+    $visor.value = removeLastItemIfItIsAnOperator($visor.value);
     $visor.value += this.value;
   }
 
-  function removeLastItemIfItIsAnOperator() {
-    if (isLastItemAnOperation()) $visor.value = $visor.value.slice(0, -1);
-  }
-
-  function isLastItemAnOperation() {
+  function isLastItemAnOperation(number) {
     let operations = ["+", "-", "x", "÷"];
-    let lastItem = $visor.value.split("").pop();
+    let lastItem = number.split("").pop();
     return operations.some(function (operator) {
       return operator === lastItem;
     });
   }
 
+  function removeLastItemIfItIsAnOperator(number) {
+    if (isLastItemAnOperation(number)) {
+      return number.slice(0, -1);
+    }
+    return number;
+  }
+
   function handleClickEqual() {
-    removeLastItemIfItIsAnOperator();
-    let allValues = $visor.value.match(/\d+[+x÷-]?/g)
-    let result = allValues.reduce(function(accumulated, actual){
-      return accumulated + actual
-    })
-    console.log(result);
+    $visor.value = removeLastItemIfItIsAnOperator($visor.value);
+    let allValues = $visor.value.match(/\d+[+x÷-]?/g);
+    $visor.value = allValues.reduce(function (accumulated, actual) {
+      let firstValue = accumulated.slice(0, -1);
+      let operator = accumulated.split("").pop();
+      let lastValue = removeLastItemIfItIsAnOperator(actual);
+      let lastOperator = isLastItemAnOperation(actual)
+        ? actual.split("").pop()
+        : "";
+      switch (operator) {
+        case "+":
+          return ( Number(firstValue) + Number(lastValue) ) + lastOperator;
+        case "-":
+          return ( Number(firstValue) - Number(lastValue) ) + lastOperator;
+        case "x":
+          return ( Number(firstValue) * Number(lastValue) ) + lastOperator;
+        case "÷":
+          return ( Number(firstValue) / Number(lastValue) ) + lastOperator;
+      }
+    });
   }
 
   function handleClickCE() {
