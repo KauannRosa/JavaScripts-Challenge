@@ -74,6 +74,8 @@ Crie uma função chamada `convertToHex`, com as seguintes características:
     a frase:
     "Não temos o equivalente hexadecimal para [COR]."
 */
+
+//old version
 function convertToHex(cor) {
   let hexa;
   switch (cor) {
@@ -109,3 +111,24 @@ console.log(convertToHex("verde"));
 console.log(convertToHex("rosa"));
 console.log(convertToHex("marrom"));
 console.log(convertToHex("laranja"));
+
+//new version
+let hex = {
+  vermelho: "#ff0000",
+  azul: "#0000ff",
+  verde: "#008000",
+  roxo: "#800080",
+  amarelo: "#ffff00",
+};
+
+function convertColorsToHex(color) {
+  if (color) return "O hexadecimal para a " + color + " é " + hex[color];
+  return "Não temos o equivalente hexadecimal para " + color + ".";
+}
+
+console.log(convertToHex("vermelho"));
+console.log(convertToHex("azul"));
+console.log(convertToHex("verde"));
+console.log(convertToHex("roxo"));
+console.log(convertToHex("amarelo"));
+console.log(convertToHex("rosa"));
